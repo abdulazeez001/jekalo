@@ -8,6 +8,9 @@ const UserSchema = new mongoose.Schema({
     last_name:{
         type:String
     },
+    name_prefix:{
+        type:String
+    },
     username:{
         type:String,
         required:[true,'Username is required'],
@@ -27,13 +30,15 @@ const UserSchema = new mongoose.Schema({
     }
 })
 
-UserSchema.virtual('name_prefix').get(function(){
+UserSchema.pre('save',async function(next){
     const firstname_first_letter = this.first_name.split('')[0]
     if(this.last_name){
         const lastname_first_letter = this.last_name.split('')[0]
-        return `${firstname_first_letter}${lastname_first_letter}`
+        this.name_prefix = `${firstname_first_letter}${lastname_first_letter}`.toUpperCase()
+        return
     }
-    return `${firstname_first_letter}`
+    this.name_prefix = `${firstname_first_letter}`.toUpperCase()
+    return
 })
 
 module.exports = mongoose.model('user',UserSchema)

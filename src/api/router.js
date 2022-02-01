@@ -19,11 +19,12 @@ module.exports = () => {
     const apiRouter  = Router();
 
     apiRouter.use(express.json())
-          .use(cookieParser())
-          .use(cors())
-          .use(helmet()) // Set security headers
-          .use(mongoSanitize()) // Sanitize
-          
+            .use(express.urlencoded({extended:true}))
+            .use(cookieParser())
+            .use(cors())
+            .use(helmet()) // Set security headers
+            .use(mongoSanitize()) // Sanitize
+            
     // Dev logging middleware
     if (process.env.NODE_ENV === 'development') {
         router.use(morgan('dev'));
