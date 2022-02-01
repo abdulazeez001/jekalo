@@ -33,7 +33,7 @@ module.exports = () => {
    apiRouter.use(`/api/${config.version}/users`,userRoutes)
    router.use('/',apiRouter)
    router.use(async function(req,res,next){
-        const error = new ErrorResponse('Not Found',404,'You shouldn\'t be here !!')
+        const error = new ErrorResponse('Not Found',404,'You shouldn\'t be here !!, go to /api/v1/users')
         next(error)})
    router.use(errorHandler)
 
