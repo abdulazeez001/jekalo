@@ -1,4 +1,5 @@
 const asyncHandler = require('../../util/async')
+const ErrorResponse = require('../../util/errorResponse')
 
 module.exports = (repository) =>{
     return {
@@ -22,13 +23,19 @@ module.exports = (repository) =>{
                    })
             })}),
         delete_:asyncHandler(async (req,res,next)=>{
-            const {params} = req
-           await repository.deleteUser(params).then((result)=>{
-                res.status(200)
-                   .json({
-                       status:'success',
-                       message:result.message
-                   })
-            })})
+              try{
+                const {params} = req
+                await repository.deleteUser(params).then((result)=>{
+                     res.status(200)
+                        .json({
+                            status:'success',
+                            message:result.message
+                        })
+                 })
+
+              }catch(error){
+                    next(new ErrorResponse(error.message,400,error.errorInfo.name))
+              }
+        })
     }
 }

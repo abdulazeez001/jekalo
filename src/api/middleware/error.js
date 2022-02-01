@@ -30,7 +30,7 @@ const errorHandler = (err,req,res,next)=>{
     
     // console.log(err.code)
     res.status(error.statusCode || 500).json({
-        success: false,
+        status: 'error',
         error: error.message || 'Server Error',
         info:error.info
     });

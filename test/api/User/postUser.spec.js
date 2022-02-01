@@ -1,39 +1,25 @@
 
 
 
-describe(`API :: POST /api/${version}/create-user`,function(){
+describe(`API :: POST /api/${version}/users`,function(){
     context('when sent data is ok',function(){
         it('creates and returns 201 and the new user',(done)=>{
             request
-             .post(`/api/${version}/create-user`)
+             .post(`/api/${version}/users`)
              .send({
                 'first_name': 'Anifowose',
-                'last_name': '"Habeeb',
+                'last_name': 'Habeeb',
                 'username': 'mthamayor',
                 'date_of_birth': '31-01-1995'  
              })
              .expect(201)
              .end((err,res)=>{
-                expect(res.body).have.keys(['status','data'])
-                expect(res.body.data).have.keys(['name_prefix','first_name','last_name','username','date_of_birth'])
-                expect(res.body.status).to.equal('success')
-                expect(res.body.data.success).to.equal('User account successfully created')
+                expect(res._body).have.keys(['status','data','message'])
+                expect(res._body.status).to.equal('success')
+                expect(res._body.message).to.equal('User created successfully')
                 done(err)
              })     
          })
     })
 
-    context('when firstname, username,date_of_birth does not exist',function(){
-        it('does not create user and returns 400 with the validation error', function(done){
-            request
-            .post(`/api/${version}/create-user`)
-            .expect(400)
-            .end((err,res)=>{
-                expect(res.body).have.keys(['status','error'])
-                expect(res.body.status).to.equal('error')
-                expect(res.body.error).to.equal('ValidationError')
-                done(err)
-            })
-        })
-    })
 })
